@@ -6,6 +6,8 @@
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" media="screen" href="design.css" />
     <script src="script.js"></script>
@@ -13,5 +15,48 @@
 </head>
 <body>
     
+    <div class="container-fluid">
+        <div class="row justify-content-between align-items-center" id="header">
+            <span class="header-icon float-left">
+                <p id="coinCount">0</p>
+            </span>
+
+            <span class="header-icon float-right">
+                <p class="text-right" id="menuButton">&#9776;</p>
+            </span>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="playArea">
+        <div class="row mt-3 no-gutters">
+            <div class="col">
+                <div class="buttonContainer"></div>
+            </div>
+            <div class="col-10">
+                <div class="progressBarContainer"></div>
+            </div>
+        </div>
+
+        <div class="row mt-3 no-gutters">
+            <div class="col">
+                <div class="buttonContainer"></div>
+            </div>
+            <div class="col-10">
+                <div class="progressBarContainer"></div>
+            </div>
+        </div>
+
+        <div class="row mt-3 no-gutters">
+            <div class="col">
+                <div class="buttonContainer"></div>
+            </div>
+            <div class="col-10">
+                <div class="progressBarContainer"></div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

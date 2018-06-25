@@ -3,3 +3,35 @@ body {
     margin: 0;
     padding: 0;
 }
+
+#header {
+    height: 75px;
+    background-color: #1abc9c;
+}
+.header-icon {
+    padding: 8px;
+}
+
+#menuButton {
+    font-size: 30pt;
+    color: white;
+}
+
+#coinCount {
+    font-size: 25pt;
+    color: white;
+}
+
+.buttonContainer {
+    background-color: grey;
+    height: 75px;
+}
+
+.progressBarContainer {
+    background-color: grey;
+    height: 75px;
+}
+/* This is to space out the buttons properly from the progress bars */
+#playArea .row .col {
+    margin-right: 15px;
+}
