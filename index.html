@@ -14,16 +14,22 @@
 
 </head>
 <body>
-    
+    <div id="overMenu">
+        <div class="row">
+            <div class="col-12 text-white">
+                This is where some of the game stats and stuff will go. Hopefully, this will work with Bootstrap as well.
+                I am confident that this will work for the purposes that I want it to work for.
+            </div>
+        </div>
+    </div>
+
     <div class="container-fluid">
         <div class="row justify-content-between align-items-center" id="header">
             <span class="header-icon float-left">
                 <p id="coinCount">0</p>
             </span>
 
-            <span class="header-icon float-right">
-                <p class="text-right" id="menuButton">&#9776;</p>
-            </span>
+            <span class="header-icon float-right" id="menuButton" onclick="toggleMenu()">&#9776;</span>
                 
             </div>
         </div>
@@ -44,6 +50,36 @@
 
                     <div class="row">
                         <div class="col-12 progressBar">
+                            <div class="progressor"></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 xpBar">
+
+                        </div>
+                    </div>
+
+                </div><!-- END progressBarContainer wrapper -->
+
+            </div><!-- col-10 of progress bars box -->
+
+        </div><!-- END row for button and progress bars 1 -->
+
+        <div class="row mt-3 no-gutters">
+            <div class="col">
+                <div class="buttonContainer"></div>
+            </div>
+            <div class="col-10">
+
+                <div class="progressBarContainer">
+
+                    <div class="row">
+                        <div class="col-12 text-center actionTitle">Fighting</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 progressBar">
 
                         </div>
                     </div>
@@ -58,69 +94,41 @@
 
             </div><!-- col-10 of progress bars box -->
 
-        </div><!-- END row for button and progress bars -->
+        </div><!-- END row for button and progress bars 2 -->
 
         <div class="row mt-3 no-gutters">
-                <div class="col">
-                    <div class="buttonContainer"></div>
-                </div>
-                <div class="col-10">
-    
-                    <div class="progressBarContainer">
-    
-                        <div class="row">
-                            <div class="col-12 text-center actionTitle">Fighting</div>
-                        </div>
-    
-                        <div class="row">
-                            <div class="col-12 progressBar">
-    
-                            </div>
-                        </div>
-    
-                        <div class="row">
-                            <div class="col-12 xpBar">
-    
-                            </div>
-                        </div>
-    
-                    </div><!-- END progressBarContainer wrapper -->
-    
-                </div><!-- col-10 of progress bars box -->
-    
-            </div><!-- END row for button and progress bars -->
+            <div class="col">
+                <div class="buttonContainer"></div>
+            </div>
+            <div class="col-10">
 
-            <div class="row mt-3 no-gutters">
-                    <div class="col">
-                        <div class="buttonContainer"></div>
+                <div class="progressBarContainer">
+
+                    <div class="row">
+                        <div class="col-12 text-center actionTitle">Spell Casting</div>
                     </div>
-                    <div class="col-10">
-        
-                        <div class="progressBarContainer">
-        
-                            <div class="row">
-                                <div class="col-12 text-center actionTitle">Spell Casting</div>
-                            </div>
-        
-                            <div class="row">
-                                <div class="col-12 progressBar">
-        
-                                </div>
-                            </div>
-        
-                            <div class="row">
-                                <div class="col-12 xpBar">
-        
-                                </div>
-                            </div>
-        
-                        </div><!-- END progressBarContainer wrapper -->
-        
-                    </div><!-- col-10 of progress bars box -->
-        
-                </div><!-- END row for button and progress bars -->
+
+                    <div class="row">
+                        <div class="col-12 progressBar">
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 xpBar">
+
+                        </div>
+                    </div>
+
+                </div><!-- END progressBarContainer wrapper -->
+
+            </div><!-- col-10 of progress bars box -->
+
+        </div><!-- END row for button and progress bars 3-->
 
     </div><!-- END container for playArea -->
+
+    
 
 </body>
 </html>

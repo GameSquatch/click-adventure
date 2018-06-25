@@ -4,6 +4,14 @@ body {
     padding: 0;
 }
 
+#overMenu {
+    position: absolute;
+    z-index: 2;
+    width: 70%;
+    background-color: rgba(30, 30, 30, 0.4);
+    transition: left 0.5s ease-out;
+}
+
 #header {
     height: 75px;
     background-color: #1abc9c;
@@ -15,6 +23,10 @@ body {
 #menuButton {
     font-size: 30pt;
     color: white;
+}
+#menuButton:hover {
+    background-color: #3de0c0;
+    cursor: pointer;
 }
 
 #coinCount {
@@ -50,9 +62,20 @@ body {
 .progressBar {
     height: 30px;
     background-color: #CCCCCC;
+    padding: 0;
+}
+.progressor {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    left: 0;
+    width: 45%;
+    height: 100%;
+    background-color: blue;
 }
 
 .xpBar {
     height: 12px;
     background-color: #CCCCCC;
 }
+
