@@ -24,14 +24,35 @@ body {
 
 .buttonContainer {
     background-color: grey;
-    height: 75px;
+    height: 100%;
+}
+.buttonContainer:hover {
+    background-color: #BBBBBB;
 }
 
 .progressBarContainer {
     background-color: grey;
-    height: 75px;
+    padding: 5px 25px;
+}
+
+.progressBarContainer .row {
+    margin: 8px 0;
 }
 /* This is to space out the buttons properly from the progress bars */
 #playArea .row .col {
     margin-right: 15px;
+}
+
+.actionTitle {
+    color: white;
+}
+
+.progressBar {
+    height: 30px;
+    background-color: #CCCCCC;
+}
+
+.xpBar {
+    height: 12px;
+    background-color: #CCCCCC;
 }
