@@ -50,11 +50,22 @@ function actionGo(barNum) {
             intervals[barNum] = null;
             // set the bar back to a starting width of 0
             $(bars[barNum]).width("0%");
-            
-            coinCount.html(parseInt(coinCount.text()) + player.skillValues[barNum]);
+
+            // update player's coin amount
+            player.coinCount += player.skillValues[barNum];
+            coinCount.html(player.coinCount);
+
+            // drops special items
+            if (player.droppedItem(player.itemChances[barNum][1])) {
+                player.inventory[player.items[barNum][1]]++;
+            }
+            else if (player.droppedItem(player.itemChances[barNum][0])) {
+                player.inventory[player.items[barNum][0]]++;
+            }
         }
         else {// else increment the progress using the player's rates
             w += player.skillRates[barNum];
+            // and set the width to the incrementing variable
             $(bars[barNum]).width(`${w}%`);
         }
     }
@@ -63,6 +74,33 @@ function actionGo(barNum) {
 function Player() {
     this.skillRates = [0.3, 0.22, 0.14];
     this.skillValues = [2, 4, 7];
+    this.coinCount = 0;
+    this.inventory = {
+        "Wheat": 0,
+        "Starfruit": 0,
+        "Sword": 0,
+        "Power Ring": 0,
+        "Wand": 0,
+        "Rune Stone": 0
+    };
+    this.itemChances = [
+        [20, 11],
+        [15, 9],
+        [10, 5]
+    ];
+    this.items = [
+        ["Wheat", "Starfruit"],
+        ["Sword", "Power Ring"],
+        ["Wand", "Rune Stone"]
+    ];
+
+    this.droppedItem = function(dropChance) {
+        if (Math.random() * 100 + 1 <= dropChance) {
+            return true;
+        }
+
+        return false;
+    }
 }
 
 window.addEventListener("resize", (event) => {
