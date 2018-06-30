@@ -55,12 +55,14 @@ function actionGo(barNum) {
             player.coinCount += player.skillValues[barNum];
             coinCount.html(player.coinCount);
 
-            // drops special items
+            // if dropped a rare item, else if dropped common, add one to inventory
             if (player.droppedItem(player.itemChances[barNum][1])) {
                 player.inventory[player.items[barNum][1]]++;
+                itemFoundAnimation(barNum, 1);
             }
             else if (player.droppedItem(player.itemChances[barNum][0])) {
                 player.inventory[player.items[barNum][0]]++;
+                itemFoundAnimation(barNum, 0);
             }
         }
         else {// else increment the progress using the player's rates
@@ -84,9 +86,9 @@ function Player() {
         "Rune Stone": 0
     };
     this.itemChances = [
-        [20, 11],
-        [15, 9],
-        [10, 5]
+        [40, 11],
+        [35, 29],
+        [30, 25]
     ];
     this.items = [
         ["Wheat", "Starfruit"],
@@ -100,6 +102,35 @@ function Player() {
         }
 
         return false;
+    }
+}
+
+function itemFoundAnimation(barNum, rarity) {
+    let itemName = player.items[barNum][rarity];
+    let itemhtml = `<div class="itemAnimation" id="itemAnimation-${barNum}">Found 1 ${itemName}!</div>`;
+    let itemElem = $(`#playArea .row:nth-child(${barNum + 1}) .progressBarContainer`);
+    itemElem.append(itemhtml);
+    let newElem = $(`#itemAnimation-${barNum}`);
+
+    let anim = setInterval(itemNameMove, 10);
+
+    // variables for the floating words physics
+    let opacity = 1.0, y = 0, yv = 0.8, x = 0, xa = 0.02, xv = 0;
+    function itemNameMove() {
+        opacity -= 0.008;// decrease opacity each call
+        yv *= 0.975;// y direction velocity dampening
+        y += yv;// y position plus the velocity
+        xa = (xv > 1.2 ? -0.01 : 0.02); // working on something different for this
+        xv += xa;// velocity add accel
+        x += xv;// position add velocity
+        
+        // the floating words are affected by opacity bottom (y pos) and left (x pos)
+        newElem.css({"opacity": `${opacity}`, "bottom": `${y}px`, "left": `${x}px`});
+        
+        if (opacity <= 0.0) {// if opacity reaches zero, clear interval and remove div elem
+            clearInterval(anim);
+            newElem.remove();
+        }
     }
 }
 
