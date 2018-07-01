@@ -1,5 +1,5 @@
 let overMenu, overMenuWidth;
-let bars;
+let bars, xpBars;
 let intervals = {};
 let player;
 let coinCount;
@@ -11,6 +11,7 @@ $(document).ready(() => {
     overMenu.css("left", -overMenuWidth);
 
     bars = $(".progressor");
+    xpBars = $(".xpProgressor");
     coinCount = $("#coinCount");
     // bars = document.getElementsByClassName("progressor");
     player  = new Player();
@@ -36,6 +37,10 @@ function actionGo(barNum) {
     // bars[barNum].style.width = "75%";
     // $(bars[barNum]).width("75%");
     let w = 0;
+    let xpW = parseInt($(xpBars[barNum]).css("width"), 10);
+    // let xpW = xpBars[barNum].style.width;
+    // if (xpW) xpW = parseInt(xpW, 10);
+    console.log("xp bar width when clicked: ", xpW);
 
     if (!intervals[barNum]) {
         intervals[barNum] = setInterval(fill, 10);
@@ -49,7 +54,17 @@ function actionGo(barNum) {
             clearInterval(intervals[barNum]);
             intervals[barNum] = null;
             // set the bar back to a starting width of 0
-            $(bars[barNum]).width("0%");
+            $(bars[barNum]).css("width", "0%");
+            
+            xpW += player.xpRates[barNum];
+            console.log("xpRate: ", player.xpRates[barNum]);
+            console.log(`xpW + xpRate = ${xpW}`);
+            if (xpW  > 100) {
+                xpW = 0;
+            }
+            $(xpBars[barNum]).css("width", `${xpW}%`);
+            // xpBars[barNum].style.width = xpW + "%";
+            console.log("width after setting:", parseInt($(xpBars[barNum]).css("width"), 10));
 
             // update player's coin amount
             player.coinCount += player.skillValues[barNum];
@@ -64,11 +79,11 @@ function actionGo(barNum) {
                 player.inventory[player.items[barNum][0]]++;
                 itemFoundAnimation(barNum, 0);
             }
-        }
+        }// END if w >= 100
         else {// else increment the progress using the player's rates
             w += player.skillRates[barNum];
             // and set the width to the incrementing variable
-            $(bars[barNum]).width(`${w}%`);
+            $(bars[barNum]).css("width", `${w}%`);
         }
     }
 }
@@ -76,6 +91,7 @@ function actionGo(barNum) {
 function Player() {
     this.skillRates = [0.3, 0.22, 0.14];
     this.skillValues = [2, 4, 7];
+    this.xpRates = [25, 20, 15];
     this.coinCount = 0;
     this.inventory = {
         "Wheat": 0,
