@@ -1,4 +1,5 @@
 let overMenu, overMenuWidth;
+let inventory;
 let bars, xpBars;
 let intervals = {};
 let player;
@@ -6,6 +7,7 @@ let coinCount;
 
 $(document).ready(() => {
     overMenu = $("#overMenu");
+    inventory = $("#playerInv");
     overMenuWidth = parseInt(overMenu.width());
     overMenu.css("height", window.innerHeight);
     overMenu.css("left", -overMenuWidth);
@@ -15,6 +17,7 @@ $(document).ready(() => {
     coinCount = $("#coinCount");
     // bars = document.getElementsByClassName("progressor");
     player  = new Player();
+    player.updateHTML();
 });
 
 function toggleMenu() {
@@ -37,10 +40,8 @@ function actionGo(barNum) {
     // bars[barNum].style.width = "75%";
     // $(bars[barNum]).width("75%");
     let w = 0;
-    let xpW = parseInt($(xpBars[barNum]).css("width"), 10);
-    // let xpW = xpBars[barNum].style.width;
-    // if (xpW) xpW = parseInt(xpW, 10);
-    console.log("xp bar width when clicked: ", xpW);
+    let xpW = parseInt(xpBars[barNum].style.width);
+    if (!xpW) xpW = 0;
 
     if (!intervals[barNum]) {
         intervals[barNum] = setInterval(fill, 10);
@@ -57,14 +58,11 @@ function actionGo(barNum) {
             $(bars[barNum]).css("width", "0%");
             
             xpW += player.xpRates[barNum];
-            console.log("xpRate: ", player.xpRates[barNum]);
-            console.log(`xpW + xpRate = ${xpW}`);
-            if (xpW  > 100) {
-                xpW = 0;
+
+            if (xpW  >= 100) {
+                xpW -= 100;
             }
             $(xpBars[barNum]).css("width", `${xpW}%`);
-            // xpBars[barNum].style.width = xpW + "%";
-            console.log("width after setting:", parseInt($(xpBars[barNum]).css("width"), 10));
 
             // update player's coin amount
             player.coinCount += player.skillValues[barNum];
@@ -74,10 +72,12 @@ function actionGo(barNum) {
             if (player.droppedItem(player.itemChances[barNum][1])) {
                 player.inventory[player.items[barNum][1]]++;
                 itemFoundAnimation(barNum, 1);
+                player.updateHTML();
             }
             else if (player.droppedItem(player.itemChances[barNum][0])) {
                 player.inventory[player.items[barNum][0]]++;
                 itemFoundAnimation(barNum, 0);
+                player.updateHTML();
             }
         }// END if w >= 100
         else {// else increment the progress using the player's rates
@@ -119,11 +119,20 @@ function Player() {
 
         return false;
     }
+
+    this.updateHTML = function() {
+        let keys = Object.keys(this.inventory);
+        let html = "";
+        for (let i = 0; i < keys.length; ++i) {
+            html += keys[i] + ": " + this.inventory[keys[i]] + "<br/>";
+        }
+        inventory.html(html);
+    }
 }
 
 function itemFoundAnimation(barNum, rarity) {
     let itemName = player.items[barNum][rarity];
-    let itemhtml = `<div class="itemAnimation" id="itemAnimation-${barNum}">Found 1 ${itemName}!</div>`;
+    let itemhtml = `<div style="bottom:0;left:0" class="itemAnimation" id="itemAnimation-${barNum}">Found 1 ${itemName}!</div>`;
     let itemElem = $(`#playArea .row:nth-child(${barNum + 1}) .progressBarContainer`);
     itemElem.append(itemhtml);
     let newElem = $(`#itemAnimation-${barNum}`);
@@ -144,8 +153,9 @@ function itemFoundAnimation(barNum, rarity) {
         newElem.css({"opacity": `${opacity}`, "bottom": `${y}px`, "left": `${x}px`});
         
         if (opacity <= 0.0) {// if opacity reaches zero, clear interval and remove div elem
-            clearInterval(anim);
             newElem.remove();
+            newElem = null;
+            clearInterval(anim);
         }
     }
 }
