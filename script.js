@@ -1,5 +1,5 @@
 let overMenu, overMenuWidth;
-let inventory;
+let invTitles, invCounts, levels;
 let bars, xpBars;
 let intervals = {};
 let player;
@@ -7,7 +7,9 @@ let coinCount;
 
 $(document).ready(() => {
     overMenu = $("#overMenu");
-    inventory = $("#playerInv");
+    invTitles = $("#invTitles");
+    invCounts = $("#invCounts")
+    levels = $("#levels");
     overMenuWidth = parseInt(overMenu.width());
     overMenu.css("height", window.innerHeight);
     overMenu.css("left", -overMenuWidth);
@@ -17,7 +19,8 @@ $(document).ready(() => {
     coinCount = $("#coinCount");
     // bars = document.getElementsByClassName("progressor");
     player  = new Player();
-    player.updateHTML();
+    player.updateInventory();
+    player.updateLevels();
 });
 
 function toggleMenu() {
@@ -57,28 +60,13 @@ function actionGo(barNum) {
             // set the bar back to a starting width of 0
             $(bars[barNum]).css("width", "0%");
             
-            xpW += player.xpRates[barNum];
+            // complete all processes update coins, levels, etc
+            player.finishProgressBar(barNum);
 
-            if (xpW  >= 100) {
-                xpW -= 100;
-            }
+            xpW = player.updateXP(barNum, xpW);
+            // needs to be after the player.finishProgressBar func
             $(xpBars[barNum]).css("width", `${xpW}%`);
 
-            // update player's coin amount
-            player.coinCount += player.skillValues[barNum];
-            coinCount.html(player.coinCount);
-
-            // if dropped a rare item, else if dropped common, add one to inventory
-            if (player.droppedItem(player.itemChances[barNum][1])) {
-                player.inventory[player.items[barNum][1]]++;
-                itemFoundAnimation(barNum, 1);
-                player.updateHTML();
-            }
-            else if (player.droppedItem(player.itemChances[barNum][0])) {
-                player.inventory[player.items[barNum][0]]++;
-                itemFoundAnimation(barNum, 0);
-                player.updateHTML();
-            }
         }// END if w >= 100
         else {// else increment the progress using the player's rates
             w += player.skillRates[barNum];
@@ -91,7 +79,12 @@ function actionGo(barNum) {
 function Player() {
     this.skillRates = [0.3, 0.22, 0.14];
     this.skillValues = [2, 4, 7];
-    this.xpRates = [25, 20, 15];
+    this.skillLevels = {
+        "Farming": 1,
+        "Fighting": 1,
+        "Spell Casting": 1
+    };
+    this.xpRates = [15, 20, 30];
     this.coinCount = 0;
     this.inventory = {
         "Wheat": 0,
@@ -112,6 +105,11 @@ function Player() {
         ["Wand", "Rune Stone"]
     ];
 
+    this.finishProgressBar = function(barNum) {
+        this.addCoins(barNum);
+        this.checkDrops(barNum);
+    }
+
     this.droppedItem = function(dropChance) {
         if (Math.random() * 100 + 1 <= dropChance) {
             return true;
@@ -120,13 +118,62 @@ function Player() {
         return false;
     }
 
-    this.updateHTML = function() {
+    this.updateInventory = function() {
         let keys = Object.keys(this.inventory);
+        let titles = "", counts = "";
+
+        for (let i = 0; i < keys.length; ++i) {
+            titles += keys[i] + "<br/>";// + "" + this.inventory[keys[i]] + "<br/>";
+        }
+        invTitles.html(titles);
+
+        for (let i = 0; i < keys.length; ++i) {
+            counts += this.inventory[keys[i]] + "<br/>";
+        }
+        invCounts.html(counts);
+    }
+
+    this.updateLevels = function() {
+        let keys = Object.keys(this.skillLevels);
         let html = "";
         for (let i = 0; i < keys.length; ++i) {
-            html += keys[i] + ": " + this.inventory[keys[i]] + "<br/>";
+            html += keys[i] + ": " + this.skillLevels[keys[i]] + "<br/>";
         }
-        inventory.html(html);
+        levels.html(html);
+    }
+
+    this.addCoins = function(barNum) {
+        this.coinCount += this.skillValues[barNum];
+        coinCount.html(this.coinCount);
+    }
+
+    this.updateXP = function(barNum, xp) {
+        xp += this.xpRates[barNum];
+
+        if (xp  >= 100) {
+            xp -= 100;
+            this.skillLevels[Object.keys(this.skillLevels)[barNum]]++;
+            this.updateLevels();
+        }
+        return xp;
+    }
+
+    this.checkDrops = function(barNum) {
+        // if dropped a rare item
+        if (this.droppedItem(this.itemChances[barNum][1])) {
+            // add a rare item to inventory
+            this.inventory[this.items[barNum][1]]++;
+            // play the animation
+            itemFoundAnimation(barNum, 1);
+            // update the html
+            player.updateInventory();
+        }
+        //else if dropped a common item
+        else if (this.droppedItem(this.itemChances[barNum][0])) {
+            this.inventory[this.items[barNum][0]]++;
+            itemFoundAnimation(barNum, 0);
+            this.updateInventory();
+        }
     }
 }
 
@@ -164,3 +211,5 @@ window.addEventListener("resize", (event) => {
     overMenuWidth = parseInt(overMenu.width());
     overMenu.css("left", -overMenuWidth);
 });
+
+

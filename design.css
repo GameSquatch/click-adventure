@@ -2,14 +2,30 @@ body {
     position: relative;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 #overMenu {
     position: absolute;
     z-index: 5;
-    width: 70%;
+    width: 50%;
     background-color: rgba(30, 30, 30, 0.55);
     transition: left 0.5s ease-out;
+}
+#exitButton {
+    position: absolute;
+    z-index: 5;
+    right: 0;
+    top: 0;
+    font-size: 18pt;
+    color: white;
+    padding: 8px;
+}
+#exitButton:hover {
+    cursor: pointer;
+}
+#stats {
+    padding: 8px 0;
 }
 
 #header {
@@ -40,6 +56,7 @@ body {
 }
 .buttonContainer:hover {
     background-color: #BBBBBB;
+    cursor: pointer;
 }
 
 .progressBarContainer {
@@ -95,5 +112,11 @@ body {
     z-index: 2;
     right: 0;
     opacity: 1.0;
+}
+
+@media (max-width: 540px) {
+    #overMenu {
+        width: 100%;
+    }
 }
 
