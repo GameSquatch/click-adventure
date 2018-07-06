@@ -18,6 +18,7 @@ $(document).ready(() => {
     xpBars = $(".xpProgressor");
     coinCount = $("#coinCount");
     // bars = document.getElementsByClassName("progressor");
+    // new something
     player  = new Player();
     player.updateInventory();
     player.updateLevels();
